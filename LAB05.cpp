@@ -64,7 +64,7 @@ public:
             cout << "卡牌已滿！" << endl;
             return;
         }
-        deck[++Rear]=card;
+        deck[++Rear]=card; // 這邊應該要用 pushh_back 因為 deck 是 vecoter
         cout << "插入卡牌: " << card.rank << " of " << card.suit << endl ;
     }
     // 從佇列中移除最前端元素
@@ -81,6 +81,7 @@ public:
         if (Front == Rear) {
             Front = -1; // 重置 Front
             Rear = -1;  // 重置 rear
+		// 這邊可以補上 deck.clear() 來清空 vectoer
         }
     }
     Card front() {// 獲取佇列最前端元素
@@ -88,7 +89,7 @@ public:
             cout << "牌堆為空，無法獲取最前端的牌！" << endl;
             return Card("", "");
         }
-        return deck[Front];
+        return deck[Front]; // 這邊改成 Front + 1 因為 Front 的初始值是 -1
     }
     bool isEmpty() const {// 判斷佇列是否為空
         return Rear==Front;
