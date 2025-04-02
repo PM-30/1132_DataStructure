@@ -59,25 +59,22 @@ public:
     // 建構函式
     Queue(int size) : Front(-1), Rear(-1), capacity(size) {}
     // 插入元素到佇列尾端
-    void enqueue(Card card) {
-    	if (isFull()) {
+    void enqueue(Card card) {//將卡排放入牌組
+    	if (isFull()) {//判斷是否已經填滿
             cout << "卡牌已滿！" << endl;
             return;
         }
-        Rear++;
-        deck.push_back(card);
-        cout << "插入卡牌: " << card.rank << " of " << card.suit << endl ;
+        Rear++;//改變指標所指向的位子
+        deck.push_back(card);//使用vector內部的push_back將卡牌填入後端
     }
     // 從佇列中移除最前端元素
     void dequeue() {
-        if (isEmpty()) { // 檢查佇列是否為空
+        if (isEmpty()) { // 檢查牌組是否為空如果已經沒牌則無法移除
             cout << "卡牌為空！無法移除卡牌。" << endl;
             return;
         }
         // 移動 Front 指標
         Front++;
-        // 移除元素並打印
-        cout << "移動卡牌: " << deck[Front].rank << " of " << deck[Front].suit << endl;
         // 判斷是否所有元素已移除，佇列需要重置
         if (Front == Rear) {
             Front = -1; // 重置 Front
@@ -92,10 +89,10 @@ public:
         }
         return deck[Front+1];
     }
-    bool isEmpty() const {// 判斷佇列是否為空
+    bool isEmpty() const {// 判斷牌組是否為空
         return Rear==Front;
     }
-    bool isFull() const {// 判斷佇列是否已滿
+    bool isFull() const {// 判斷牌組是否已滿
         return deck.size() >= capacity;
     }
 };
@@ -110,7 +107,7 @@ void initializeDeck(Queue& cardDeck) {// 初始化並洗牌
     for (int i = 0; i < 52; i++) {
         deck.getCard(i).display();//印出洗牌後的牌堆
     }
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < 52; i++) {//將已經洗好的牌組儲存起來
         cardDeck.enqueue(deck.getCard(i)); 
     }
 }
@@ -120,10 +117,9 @@ void initializePlayer(Player* player, string name, Queue& cardDeck) {// 初始�
     cout << player->name << " 抽到的牌: ";
     Card drawnCard;
     for (int i = 0; i < 2; i++) {// 發兩張牌
-    	drawnCard=cardDeck.front();
- 		cardDeck.dequeue();
-		cout << drawnCard.rank << " of " << drawnCard.suit << "  ";//印出抽到的牌
-
+    	drawnCard=cardDeck.front();//抽出以洗好的牌組最上端的卡牌
+ 	cardDeck.dequeue();//刪除已被抽出的卡牌
+	cout << drawnCard.rank << " of " << drawnCard.suit << "  ";//印出抽到的牌
         if (drawnCard.rank == "A") player->score += 1;//計算A點數
         else if (drawnCard.rank == "J" || drawnCard.rank == "Q" || drawnCard.rank == "K") player->score += 10;//計算JQK點數
         else player->score += stoi(drawnCard.rank);//計算2-10點數
@@ -137,10 +133,9 @@ void playerTurn(Player* player, Queue& cardDeck) {// 玩家回合
     while (player->score < 21 && !cardDeck.isEmpty()) {// 玩家小於21點且牌堆不為空
         cout << player->name << " 您的手牌分數目前為: " << player->score << " 要抽牌嗎？(h = 抽, s = 停) : ";//顯示選擇
         cin >> choice;//輸入選擇
-
         if (choice == 'h') {//如果玩家選擇抽牌
-            Card newCard=cardDeck.front();
- 		    cardDeck.dequeue();
+            Card newCard=cardDeck.front();//玩家抽出最上端的卡牌
+            cardDeck.dequeue();//刪除牌組中已被抽出的卡牌
             if (newCard.rank == "A") player->score += 1;//計算A點數
             else if (newCard.rank == "J" || newCard.rank == "Q" || newCard.rank == "K") player->score += 10; //計算JQK點數
             else player->score += stoi(newCard.rank);//計算2-10點數
@@ -162,8 +157,8 @@ void playerTurn(Player* player, Queue& cardDeck) {// 玩家回合
 }
 void dealerTurn(Player* dealer, Queue& cardDeck) {// 莊家回合
     while (dealer->score < 17 && !cardDeck.isEmpty()) {// 莊家小於17點且牌堆不為空
-        Card newCard=cardDeck.front();
- 		cardDeck.dequeue();
+        Card newCard=cardDeck.front();//莊家抽出牌組最上端的卡牌
+ 	cardDeck.dequeue();//刪除牌組中被刪出的卡牌
         if (newCard.rank == "A") dealer->score += 1;//計算A點數
         else if (newCard.rank == "J" || newCard.rank == "Q" || newCard.rank == "K") dealer->score += 10;//計算JQK點數
         else dealer->score += stoi(newCard.rank);//計算2-10點數
