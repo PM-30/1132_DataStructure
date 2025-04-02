@@ -64,6 +64,7 @@ public:
             cout << "卡牌已滿！" << endl;
             return;
         }
+        Rear++;
         deck.push_back(card);
         cout << "插入卡牌: " << card.rank << " of " << card.suit << endl ;
     }
@@ -117,9 +118,9 @@ void initializePlayer(Player* player, string name, Queue& cardDeck) {// 初始�
     player->name = name;// 玩家名稱
     player->score = 0;// 玩家分數
     cout << player->name << " 抽到的牌: ";
-
+    Card drawnCard;
     for (int i = 0; i < 2; i++) {// 發兩張牌
-    	Card drawnCard=cardDeck.front();
+    	drawnCard=cardDeck.front();
  		cardDeck.dequeue();
 		cout << drawnCard.rank << " of " << drawnCard.suit << "  ";//印出抽到的牌
 
