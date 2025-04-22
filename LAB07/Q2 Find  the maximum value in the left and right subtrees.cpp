@@ -71,14 +71,13 @@ public:
     }
     //找出最大的數值
     int FindMaxnum(TreeNode* node) {
-    if (node == nullptr)//recurse停止條件
-        return INT_MIN;//以最小值表示空白的地方
+        if (node == nullptr)//recurse停止條件
+            return INT_MIN;//以最小值表示空白的地方
         
-    int leftVal = FindMaxnum(node->left);//找出左子樹最大值
-    int rightVal = FindMaxnum(node->right);//找出右子樹的最大值
-    int currentMax = max(node->value, max(leftVal, rightVal));//比較自己及childen之間大小
-
-    return currentMax;//回傳比較後的最大值
+        int leftVal = FindMaxnum(node->left);//找出左子樹最大值
+        int rightVal = FindMaxnum(node->right);//找出右子樹的最大值
+        int currentMax = max(node->value, max(leftVal, rightVal));//比較自己及childen之間大小
+        return currentMax;//回傳比較後的最大值
     }
 };
 
