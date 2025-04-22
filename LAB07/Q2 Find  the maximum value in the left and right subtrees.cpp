@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include <climits>
 using namespace std;
 
 // 樹的節點
@@ -60,17 +61,25 @@ public:
         cout << node->value << " ";    // 訪問當前節點
         inorderTraversal(node->right); // 遍歷右子樹
     }
-    //找出最大的數值
-    int FindMAxnum(TreeNode* node){
-        if (node->left == nullptr && node->right == nullptr)//設定recurse停止條件
-            return 0;
-        else 
-            if (node->left->value >= node->right->value)//比較左右node大小決定回傳數值
-                return node->left->value;
-            else
-                return  node->right->value;
+    //後續遍歷
+    void PostorderTraversal(TreeNode* node){
+        if (node == nullptr) return; // 如果節點為空，忽略
+
+        PostorderTraversal(node->left);  // 遍歷左子樹
+        PostorderTraversal(node->right); // 遍歷右子樹
+        cout << node->value << " ";    // 訪問當前節點
     }
-    
+    //找出最大的數值
+    int FindMaxnum(TreeNode* node) {
+    if (node == nullptr)//recurse停止條件
+        return INT_MIN;//以最小值表示空白的地方
+        
+    int leftVal = FindMaxnum(node->left);//找出左子樹最大值
+    int rightVal = FindMaxnum(node->right);//找出右子樹的最大值
+    int currentMax = max(node->value, max(leftVal, rightVal));//比較自己及childen之間大小
+
+    return currentMax;//回傳比較後的最大值
+    }
 };
 
 
@@ -86,9 +95,7 @@ int main() {
     cout << "Inorder Traversal: ";
     tree.inorderTraversal(tree.root);
     cout << endl;
-    cout << "最大左子數值: " << tree.FindMAxnum(tree.root->left) << endl;//找出左子樹最大值
-    cout << "最大右子數值: " << tree.FindMAxnum(tree.root->right) << endl;//找出右子樹最大值
+    cout << "最大左子數值: " << tree.FindMaxnum(tree.root->left) << endl;//找出左子樹最大值
+    cout << "最大右子數值: " << tree.FindMaxnum(tree.root->right) << endl;//找出右子樹最大值
     return 0;
 }
-
-
