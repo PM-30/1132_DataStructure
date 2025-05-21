@@ -80,7 +80,7 @@ public:
         int level = 0;//從第0曾開始計算
 
         while (!q.empty()) {//如果Queue不為空的開始動作
-            int size = q.size();
+            int size = q.size();//確認Queue的大小來決定重複次數
             if (level == num) {
                 int sum = 0;
                 for (int i = 0; i < size; ++i) {
