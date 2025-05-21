@@ -73,13 +73,13 @@ public:
         }
     }
     int LevelSum(TreeNode* node, int num) {
-        if (!node)
+        if (!node)//如果節點為空回傳0
             return 0;
-        queue<TreeNode* > q;
-        q.push(node);
-        int level = 0;
+        queue<TreeNode* > q;//創建一個空的Queue來儲存同level未訪問的節點
+        q.push(node);//將現在所在的節點推入Queue中
+        int level = 0;//從第0曾開始計算
 
-        while (!q.empty()) {
+        while (!q.empty()) {//如果Queue不為空的開始動作
             int size = q.size();
             if (level == num) {
                 int sum = 0;
@@ -103,12 +103,13 @@ public:
         }
         return 0;
     }
-    int maxlevel(TreeNode* node) {
-        if (!node)
+    int maxlevel(TreeNode* node) {//尋找樹高最大值
+        if (!node)//如果樹是空的回傳0表示樹沒有高度
             return 0;
+        //左右子樹遞迴尋找樹高最大值
         int L = maxlevel(node->left);
         int R = maxlevel(node->right);
-        return 1 + max(L, R);
+        return 1 + max(L, R);//比較左右子樹決定該層的level為多少輸出較大數值
     }
 };
 
