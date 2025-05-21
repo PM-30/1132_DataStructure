@@ -75,36 +75,39 @@ public:
     int LevelSum(TreeNode* node, int num) {
         if (!node)//如果節點為空回傳0
             return 0;
-        queue<TreeNode* > q;//創建一個空的Queue來儲存同level未訪問的節點
+        queue<TreeNode* > q;//建立一個空的Queue以儲存同一level尚未處理的節點
         q.push(node);//將現在所在的節點推入Queue中
-        int level = 0;//從第0曾開始計算
+        int level = 0;//從根節點開始計算(Level0)
 
         while (!q.empty()) {//如果Queue不為空的開始動作
-            int size = q.size();//確認Queue的大小來決定重複次數
-            if (level == num) {//如果達到所選擇的level開始動作
+            int size = q.size();//當前層級的節點數量
+            //若達到目標的level開始動作
+            if (level == num) {
                 int sum = 0;//總和歸0
                 for (int i = 0; i < size; ++i) {
-                    TreeNode* current = q.front();
-                    q.pop();
-                    sum += current->value;//加總當前數值即原先的
+                    TreeNode* current = q.front();//將Queue中的頂端取出
+                    q.pop();//刪除被取出的節點，以免重複選取
+                    sum += current->value;//加總當前節點的數值配上原先有的數值
                 }
                 return sum;//回傳總和
             }
-
-            for (int i = 0;i < size;i++) {
-                TreeNode* current = q.front();
-                q.pop();
+            //如果未達到目標的level，將下一層所有節點加入Queue中
+            for (int i = 0; i < size; i++) {
+                TreeNode* current = q.front();//取出當前節點
+                q.pop();//刪除當前節點怕重複選取
+                //將選出的節點所擁有的子樹EnQueue
                 if (current->left)
-                    q.push(current->left);
+                    q.push(current->left);//EnQueue當前節點的左子樹
                 if (current->right)
-                    q.push(current->right);
+                    q.push(current->right);//EnQueue當前節點得右子樹
             }
-            level++;
+            level++;//進入下一層
         }
+        //若整棵樹小於num回傳0
         return 0;
     }
     int maxlevel(TreeNode* node) {//尋找樹高最大值
-        if (!node)//如果樹是空的回傳0表示樹沒有高度
+        if (!node)//如果節點是空的回傳0表示樹高為0
             return 0;
         //左右子樹遞迴尋找樹高最大值
         int L = maxlevel(node->left);
@@ -129,14 +132,14 @@ int main() {
     cout << "請輸入要查詢的層數(從0開始):" << endl;
     int num = 0;
     cin >> num;
-    int max = tree.maxlevel(tree.root) - 1;
-    if (num > max) {
-        cout << "超過樹高" << endl;
+    int max = tree.maxlevel(tree.root) - 1;//判斷輸入的樹的level
+    if (num > max) {//如果超過數高直接輸出"超過數高:"
+        cout << "超過樹高。" << endl;
     }
-    else if (num < 0) {
-        cout << "請輸入大於0的數值" << endl;
+    else if (num < 0) {//樹沒有小於0的層級
+        cout << "請輸入大於0的數值。" << endl;
     }
-    else {
+    else {//如果鎖鑰查詢的LevelSum府和規定開始動作
         int result = tree.LevelSum(tree.root, num);
         cout << "第" << num << "層總和為:" << result << endl;
     }
