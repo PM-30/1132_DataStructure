@@ -81,14 +81,14 @@ public:
 
         while (!q.empty()) {//如果Queue不為空的開始動作
             int size = q.size();//確認Queue的大小來決定重複次數
-            if (level == num) {
-                int sum = 0;
+            if (level == num) {//如果達到所選擇的level開始動作
+                int sum = 0;//總和歸0
                 for (int i = 0; i < size; ++i) {
                     TreeNode* current = q.front();
                     q.pop();
-                    sum += current->value;
+                    sum += current->value;//加總當前數值即原先的
                 }
-                return sum;
+                return sum;//回傳總和
             }
 
             for (int i = 0;i < size;i++) {
