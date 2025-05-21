@@ -67,46 +67,48 @@ public:
             q.pop();// 將該節點從queue中刪除
             cout << current->value << " ";
             if (current->left) q.push(current->left);  // 將左子節點的指標加入queue
-            if (current->right) q.push(current->right);// 將左子節點的指標加入queue
+            if (current->right) q.push(current->right);// 將右子節點的指標加入queue
         }
     }
     void Search(TreeNode* root,int target ) {
-        TreeNode* found = FindNode(root, target);
-        if (!found) {
+        TreeNode* found = FindNode(root, target);//確認是否有找到目標節點
+        if (!found) {//如果未找到目標節點回傳"未找到指定節點"
             cout << "未找到指定節點" << endl;
             return;           
         }
-        if (!found->left && !found->right) {
+        if (!found->left && !found->right) {//如果該葉節點沒有左右子樹迴傳"該節點為葉節點，沒有子樹"
             cout << "該節點為葉節點，沒有子樹" << endl;
             return;
         }
-        int leftsum = Sum(found->left);
-        int rightsum = Sum(found->right);
-        cout << "左子樹總和為: " << leftsum << endl;
-        cout << "右子樹總和為: " << rightsum << endl;
-        cout << (leftsum > rightsum ? "左子樹總和較大\n" : "右子樹總和較大\n");
+        int leftsum = Sum(found->left);//計算目標節點的左子樹的總和
+        int rightsum = Sum(found->right);//計算目標節點的右子樹的總和
+        cout << "左子樹總和為: " << leftsum << endl;//輸出左子樹總和
+        cout << "右子樹總和為: " << rightsum << endl;//輸出右子樹總和
+        cout << (leftsum > rightsum ? "左子樹總和較大\n" : "右子樹總和較大\n");//比較左右子樹總和大小決定輸出誰
     }
+    //計算該節點子樹的總和
     int Sum(TreeNode* node) {
-        if (!node)
+        if (!node)//如果該節點為空節點回傳0
             return 0;
-        return node->value + Sum(node->right) + Sum(node->left);
+        return node->value + Sum(node->right) + Sum(node->left);//迴傳節點的子樹和
     }
+    //尋找目標是否存在於樹中
     TreeNode* FindNode(TreeNode* node,int target) {
-        if (!node)
+        if (!node)//如果是空節點迴傳nullptr
             return nullptr;
-        queue<TreeNode*> q;
-        q.push(node);
-        while (!q.empty()) {
-            TreeNode* current = q.front();
-            q.pop();
-            if (current->value == target)
+        queue<TreeNode*> q;//創建一個Queue用於儲存未訪問的節點
+        q.push(node);//將當前節點EnQueue
+        while (!q.empty()) {//如果Queue不為空的開始動作
+            TreeNode* current = q.front();//取出Queue頂端的節點
+            q.pop();//刪除已經取出的節點
+            if (current->value == target)//如果節點的數值等於目標回傳節點
                 return current;
-            if (current->left)
+            if (current->left)//繼續尋找當前節點的左子樹是否為我的目標
                 q.push(current->left);
-            if (current->right)
+            if (current->right)//繼續尋找當前節點的右子樹是否為我的目標
                 q.push(current->right);
         }
-        return nullptr;
+        return nullptr;//如果尋遍Queue都沒有回傳空的節點
     }
 };
 
@@ -124,7 +126,7 @@ int main() {
     cout << endl;
     cout << "輸入欲檢查的檢點值" << endl;
     int target = 0;
-    cin >> target;
+    cin >> target;//設定要查詢的數值
     tree.Search(tree.root,target);
 
 
